@@ -1,1 +1,1 @@
-module.exports = require("bindings")("ws144");
+module.exports = require("node-gyp-build")(__dirname);
