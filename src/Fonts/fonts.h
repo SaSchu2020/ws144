@@ -65,7 +65,7 @@ typedef struct _tFont
 typedef struct                                          // ������ģ���ݽṹ
 {
   wchar_t index[3];                               // ������������
-  const char matrix[MAX_HEIGHT_FONT*MAX_WIDTH_FONT/8];  // ����������
+  const unsigned char matrix[MAX_HEIGHT_FONT*MAX_WIDTH_FONT/8];  // ����������
 }CH_CN;
 
 

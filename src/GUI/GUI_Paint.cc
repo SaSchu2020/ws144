@@ -545,7 +545,7 @@ void Paint_DrawString_CN(UWORD Xstart, UWORD Ystart, const char * pString, cFONT
         if(*p_text <= 0x7F) {  //ASCII < 126
             for(Num = 0; Num < font->size; Num++) {
                 if(*p_text== font->table[Num].index[0]) {
-                    const char* ptr = &font->table[Num].matrix[0];
+                    const unsigned char* ptr = &font->table[Num].matrix[0];
 
                     for (j = 0; j < font->Height; j++) {
                         for (i = 0; i < font->Width; i++) {
@@ -581,7 +581,7 @@ void Paint_DrawString_CN(UWORD Xstart, UWORD Ystart, const char * pString, cFONT
         } else {        //Chinese
             for(Num = 0; Num < font->size; Num++) {
                 if((*p_text== font->table[Num].index[0]) && (*(p_text+1) == font->table[Num].index[1])) {
-                    const char* ptr = &font->table[Num].matrix[0];
+                    const unsigned char* ptr = &font->table[Num].matrix[0];
 
                     for (j = 0; j < font->Height; j++) {
                         for (i = 0; i < font->Width; i++) {
