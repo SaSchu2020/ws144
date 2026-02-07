@@ -1,0 +1,16 @@
+{
+  "name": "ws144",
+  "version": "1.0.0",
+  "description": "waveshare 1.44\" display hat interface",
+  "main": "binding.js",
+  "scripts": {
+    "test": "node ./test/test_binding.js"
+  },
+  "author": "SaSchu2020",
+  "license": "ISC",
+  "gypfile": true,
+  "devDependencies": {
+    "bindings": "^1.5.0",
+    "node-addon-api": "^8.3.0"
+  }
+}
