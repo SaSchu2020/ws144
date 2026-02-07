@@ -1,5 +1,5 @@
 {
-  "name": "ws144",
+  "name": "@saschu2020/ws144",
   "version": "1.0.0",
   "description": "waveshare 1.44\" display hat interface",
   "main": "binding.js",
