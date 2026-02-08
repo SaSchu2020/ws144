@@ -9,7 +9,7 @@
     "./prebuilds"
   ],
   "scripts": {
-    "install": "npm run build",
+    "install": "node-gyp-build || exit 0",
     "build": "node-gyp-build",
     "build:x64": "node-gyp rebuild --target_arch=x64",
     "build:arm": "node-gyp rebuild --target_arch=arm",
