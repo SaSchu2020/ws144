@@ -1,7 +1,7 @@
 {
   "name": "@saschu2020/ws144",
   "repository": "https://github.com/SaSchu2020/ws144",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A sample native node addon to control a Waveshare 1.44\" display hat from nodejs on a raspberry pi",
   "main": "binding.js",
   "files": [
