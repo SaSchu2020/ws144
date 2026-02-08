@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "waveshare 1.44\" display hat interface",
   "main": "binding.js",
+  "files": [
+    "./bindings.js",
+    "./prebuilds"
+  ],
   "scripts": {
     "test": "node ./test/test_binding.js",
     "install": "node-gyp-build"
