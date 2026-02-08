@@ -1,6 +1,6 @@
 {
   "name": "@saschu2020/ws144",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A sample native node addon to control a Waveshare 1.44\" display hat from nodejs on a raspberry pi",
   "main": "binding.js",
   "files": [
