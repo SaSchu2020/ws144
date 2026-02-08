@@ -9,8 +9,17 @@
     "./prebuilds"
   ],
   "scripts": {
+    "install": "npm run build",
+    "build": "node-gyp-build",
+    "build:x64": "node-gyp rebuild --target_arch=x64",
+    "build:arm": "node-gyp rebuild --target_arch=arm",
+    "build:arm64": "node-gyp rebuild --target_arch=arm64",
+    "build:all": "./build-all.sh && npm run build:x64 && npm run build:arm && npm run build:arm64",
+    "clean": "node-gyp clean",
+    "clean:all": "node-gyp clean && cd libgpio && make -f Makefile.cross clean-all",
+    "rebuild": "npm run clean && npm run build",
     "test": "node ./test/test_binding.js",
-    "install": "node-gyp-build"
+    "prepare-libs": "./build-all.sh"
   },
   "author": "SaSchu2020",
   "license": "ISC",
