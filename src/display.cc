@@ -12,7 +12,8 @@
 Napi::Boolean writeText(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
 
-    char* text = (char*)info[0].As<Napi::String>().Utf8Value().c_str();
+    std::string textStr = info[0].As<Napi::String>().Utf8Value();
+    const char* text = textStr.c_str();
 
     UWORD x = (uint32_t)info[1].As<Napi::Number>();
     UWORD y = (uint32_t)info[2].As<Napi::Number>();
@@ -30,7 +31,8 @@ Napi::Boolean writeText(const Napi::CallbackInfo& info) {
 Napi::Boolean drawBitmap(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
 
-    char* path = (char*)info[0].As<Napi::String>().Utf8Value().c_str();
+    std::string pathStr = info[0].As<Napi::String>().Utf8Value();
+    const char* path = pathStr.c_str();
 
     GUI_ReadBmp(path);
 
