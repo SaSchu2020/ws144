@@ -21,7 +21,7 @@ npm run rebuild
 # Clean build artifacts
 npm run clean
 
-# Clean all builds including libgpio
+# Clean all builds
 npm run clean:all
 ```
 
@@ -52,13 +52,6 @@ node test/test_binding.js
 
 # Run test with verbose output (if supported)
 DEBUG=1 node test/test_binding.js
-```
-
-### Library Preparation
-
-```bash
-# Build the libgpio library (required for GPIO operations)
-npm run prepare-libs
 ```
 
 ## Code Style Guidelines
@@ -288,7 +281,7 @@ try {
 │   └── demo.bmp                   # Sample bitmap
 ├── test/
 │   └── test_binding.js            # Main test script
-├── lgpio/                         # GPIO library source
+├── lgpio/                         # GPIO library source (compiled into addon)
 ├── prebuilds/                     # Prebuilt binaries
 ├── build/                         # Build output
 ├── binding.gyp                    # Node-gyp configuration

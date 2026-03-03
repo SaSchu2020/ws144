@@ -6,22 +6,23 @@
   "main": "binding.js",
   "files": [
     "./src",
+    "./lgpio/*.c",
+    "./lgpio/*.h",
     "./binding.gyp",
     "./prebuilds",
-    "./bindings.js"
+    "./binding.js"
   ],
   "scripts": {
     "install": "node-gyp-build || exit 0",
     "build": "node-gyp-build",
-    "build:x64": "CXX=/usr/bin/x86_64-linux-gnu-g++ LINK=/usr/bin/x86_64-linux-gnu-g++ prebuildify --arch=x64",
-    "build:arm": "CXX=/usr/bin/arm-linux-gnueabihf-g++ LINK=/usr/bin/arm-linux-gnueabihf-g++ prebuildify --arch=arm",
-    "build:arm64": "CXX=/usr/bin/aarch64-linux-gnu-g++ LINK=/usr/bin/aarch64-linux-gnu-g++ prebuildify --arch=arm64",
-    "build:all": "./build-all.sh && npm run build:x64 && npm run build:arm && npm run build:arm64",
+    "build:x64": "CC=/usr/bin/x86_64-linux-gnu-gcc CXX=/usr/bin/x86_64-linux-gnu-g++ LINK=/usr/bin/x86_64-linux-gnu-g++ prebuildify --arch=x64",
+    "build:arm": "CC=/usr/bin/arm-linux-gnueabihf-gcc CXX=/usr/bin/arm-linux-gnueabihf-g++ LINK=/usr/bin/arm-linux-gnueabihf-g++ prebuildify --arch=arm",
+    "build:arm64": "CC=/usr/bin/aarch64-linux-gnu-gcc CXX=/usr/bin/aarch64-linux-gnu-g++ LINK=/usr/bin/aarch64-linux-gnu-g++ prebuildify --arch=arm64",
+    "build:all": "npm run build:x64 && npm run clean:all && npm run build:arm && npm run clean:all && npm run build:arm64",
     "clean": "node-gyp clean",
-    "clean:all": "node-gyp clean && cd lgpio && make -f Makefile.cross clean-all",
+    "clean:all": "rm -rf build",
     "rebuild": "npm run clean && npm run build",
-    "test": "node ./test/test_binding.js",
-    "prepare-libs": "./build-all.sh"
+    "test": "node ./test/test_binding.js"
   },
   "author": "SaSchu2020",
   "license": "ISC",

@@ -4,4 +4,3 @@ prebuilds
 node_modules
 **/*.so
 **/*.so.*
-lgpio/dist/

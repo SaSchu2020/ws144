@@ -427,7 +427,7 @@ void *lgPthAlert(void)
    int retval;
    int count=0;
    int sent;
-   int bytes;
+   unsigned int bytes;
    uint64_t lastGT=0;
    uint64_t lastLT=0;
    uint64_t nowLT;

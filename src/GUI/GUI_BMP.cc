@@ -38,7 +38,7 @@ UBYTE GUI_ReadBmp(const char *path)
     fread(&bmpFileHeader, sizeof(BMPFILEHEADER), 1, fp);//	sizeof(BMPFILEHEADER) must be 14,
 	fread(&bmpInfoHeader, sizeof(BMPINF), 1, fp);
 
-	int row, col;
+	unsigned long row, col;
     short data;
 	RGBQUAD rgb;
 	int len = bmpInfoHeader.bBitCount / 8;    //RGB888,one 3 byte = 1 bitbmp
