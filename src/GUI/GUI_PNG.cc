@@ -1,8 +1,10 @@
 #include "GUI_PNG.h"
 #include "GUI_BMP.h"
-#include "spng.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 static void GUI_ExtractRGB565(UWORD color, UBYTE *R, UBYTE *G, UBYTE *B)
 {
@@ -31,83 +33,22 @@ static UWORD GUI_BlendPixel(UWORD existingColor, UBYTE R, UBYTE G, UBYTE B, UBYT
 
 UBYTE GUI_ReadPng(const char *path)
 {
-    FILE *fp = fopen(path, "rb");
-    if (fp == NULL) {
-        DEBUG("Can't open PNG file: %s\n", path);
+    int width, height, channels;
+    unsigned char *img = stbi_load(path, &width, &height, &channels, 4);
+    
+    if (img == NULL) {
+        DEBUG("Failed to load PNG: %s\n", stbi_failure_reason());
         return 1;
     }
     
-    fseek(fp, 0, SEEK_END);
-    size_t fileSize = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
-    
-    unsigned char *fileBuffer = (unsigned char *)malloc(fileSize);
-    if (fileBuffer == NULL) {
-        DEBUG("Failed to allocate memory\n");
-        fclose(fp);
-        return 1;
-    }
-    fread(fileBuffer, 1, fileSize, fp);
-    fclose(fp);
-    
-    spng_ctx *ctx = spng_ctx_new(0);
-    if (ctx == NULL) {
-        DEBUG("Failed to create spng context\n");
-        free(fileBuffer);
-        return 1;
-    }
-    
-    int ret = spng_set_png_buffer(ctx, fileBuffer, fileSize);
-    if (ret) {
-        DEBUG("spng_set_png_buffer error: %s\n", spng_strerror(ret));
-        free(fileBuffer);
-        spng_ctx_free(ctx);
-        return 1;
-    }
-    
-    spng_ihdr ihdr;
-    ret = spng_get_ihdr(ctx, &ihdr);
-    if (ret) {
-        DEBUG("spng_get_ihdr error: %s\n", spng_strerror(ret));
-        free(fileBuffer);
-        spng_ctx_free(ctx);
-        return 1;
-    }
-    
-    size_t imageSize;
-    ret = spng_decoded_image_size(ctx, SPNG_FMT_RGBA8, &imageSize);
-    if (ret) {
-        DEBUG("spng_decoded_image_size error: %s\n", spng_strerror(ret));
-        free(fileBuffer);
-        spng_ctx_free(ctx);
-        return 1;
-    }
-    
-    unsigned char *imageBuffer = (unsigned char *)malloc(imageSize);
-    if (imageBuffer == NULL) {
-        DEBUG("Failed to allocate image buffer\n");
-        free(fileBuffer);
-        spng_ctx_free(ctx);
-        return 1;
-    }
-    
-    ret = spng_decode_image(ctx, imageBuffer, imageSize, SPNG_FMT_RGBA8, SPNG_DECODE_TRNS);
-    if (ret) {
-        DEBUG("spng_decode_image error: %s\n", spng_strerror(ret));
-        free(imageBuffer);
-        free(fileBuffer);
-        spng_ctx_free(ctx);
-        return 1;
-    }
-    
-    for (UWORD row = 0; row < ihdr.height; row++) {
-        for (UWORD col = 0; col < ihdr.width; col++) {
-            size_t idx = (row * ihdr.width + col) * 4;
+    for (int row = 0; row < height; row++) {
+        for (int col = 0; col < width; col++) {
+            int idx = (row * width + col) * 4;
             
-            UBYTE R = imageBuffer[idx];
-            UBYTE G = imageBuffer[idx + 1];
-            UBYTE B = imageBuffer[idx + 2];
-            UBYTE A = imageBuffer[idx + 3];
+            UBYTE R = img[idx];
+            UBYTE G = img[idx + 1];
+            UBYTE B = img[idx + 2];
+            UBYTE A = img[idx + 3];
             
             if (col >= Paint.Width || row >= Paint.Height) continue;
             
@@ -120,8 +61,6 @@ UBYTE GUI_ReadPng(const char *path)
         }
     }
     
-    free(imageBuffer);
-    free(fileBuffer);
-    spng_ctx_free(ctx);
+    stbi_image_free(img);
     return 0;
 }
