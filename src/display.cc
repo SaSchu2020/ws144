@@ -3,6 +3,7 @@
 #include "LCD_1in44.h"
 #include "fonts.h"
 #include "GUI_BMP.h"
+#include "GUI_PNG.h"
 #include "GUI_Paint.h"
 
 #include "addon.h"
@@ -35,6 +36,19 @@ Napi::Boolean drawBitmap(const Napi::CallbackInfo& info) {
     const char* path = pathStr.c_str();
 
     GUI_ReadBmp(path);
+
+    LCD_1in44_Display(displayBuffer);
+
+	return Napi::Boolean::New(env, true);
+}
+
+Napi::Boolean drawPng(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+
+    std::string pathStr = info[0].As<Napi::String>().Utf8Value();
+    const char* path = pathStr.c_str();
+
+    GUI_ReadPng(path);
 
     LCD_1in44_Display(displayBuffer);
 

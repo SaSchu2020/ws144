@@ -5,6 +5,7 @@
 
 Napi::Boolean writeText(const Napi::CallbackInfo& info);
 Napi::Boolean drawBitmap(const Napi::CallbackInfo& info);
+Napi::Boolean drawPng(const Napi::CallbackInfo& info);
 Napi::Boolean setPixel(const Napi::CallbackInfo& info);
 Napi::Boolean drawImageBuffer(const Napi::CallbackInfo& info);
 Napi::Boolean clear(const Napi::CallbackInfo& info);

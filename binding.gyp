@@ -25,6 +25,7 @@
         "./src/Fonts",
         "./src/GUI",
         "./src/LCD",
+        "./src/spng",
         "./lgpio"
       ],
       "dependencies": [
@@ -35,7 +36,7 @@
       "cflags_cc!": ["-fno-exceptions"],
       "cflags": ["-pthread", "-O3", "-Wall", "-fpic"],
       "cflags_c": ["-std=gnu99"],
-      "libraries": ["-lm", "-lrt", "-lpthread"],
+      "libraries": ["-lm", "-lrt", "-lpthread", "-lz"],
       "ldflags": ["-pthread"]
     }
   ]
