@@ -89,4 +89,21 @@ async function quit() {
         [0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0]
     ]);
+
+    testClearRectangle();
 })();
+
+function testClearRectangle() {
+  console.log("\n=== Testing clearRectangle ===");
+
+  const result = Display.clearRectangle(10, 10, 50, 50);
+  console.log("clearRectangle(10, 10, 50, 50):", result);
+
+  const result2 = Display.clearRectangle(50, 50, 10, 10, 0xF800);
+  console.log("clearRectangle(50, 50, 10, 10, 0xF800) [inverted coords]:", result2);
+
+  const result3 = Display.clearRectangle(0, 0, 127, 127);
+  console.log("clearRectangle(0, 0, 127, 127) [full screen]:", result3);
+
+  return result && result2 && result3;
+}
