@@ -33,34 +33,54 @@ static UWORD GUI_BlendPixel(UWORD existingColor, UBYTE R, UBYTE G, UBYTE B, UBYT
 
 UBYTE GUI_ReadPng(const char *path)
 {
+    return GUI_ReadPng_WithOffset(path, 0, 0);
+}
+
+UBYTE GUI_ReadPng_WithOffset(const char *path, UWORD x, UWORD y)
+{
     int width, height, channels;
     unsigned char *img = stbi_load(path, &width, &height, &channels, 4);
-    
+
     if (img == NULL) {
         DEBUG("Failed to load PNG: %s\n", stbi_failure_reason());
         return 1;
     }
-    
+
+    UWORD displayWidth = LCD_WIDTH;
+    UWORD displayHeight = LCD_HEIGHT;
+    UBYTE clipped = 0;
+
     for (int row = 0; row < height; row++) {
         for (int col = 0; col < width; col++) {
             int idx = (row * width + col) * 4;
-            
+
             UBYTE R = img[idx];
             UBYTE G = img[idx + 1];
             UBYTE B = img[idx + 2];
             UBYTE A = img[idx + 3];
-            
-            if (col >= Paint.Width || row >= Paint.Height) continue;
-            
+
+            UWORD targetX = x + col;
+            UWORD targetY = y + row;
+
+            if (targetX >= displayWidth || targetY >= displayHeight) {
+                clipped = 1;
+                continue;
+            }
+
             if (A < 255) {
-                UWORD existing = Paint_GetPixel(col, row);
-                Paint_SetPixel(col, row, GUI_BlendPixel(existing, R, G, B, A));
+                UWORD existing = Paint_GetPixel(targetX, targetY);
+                Paint_SetPixel(targetX, targetY, GUI_BlendPixel(existing, R, G, B, A));
             } else {
-                Paint_SetPixel(col, row, RGB(R, G, B));
+                Paint_SetPixel(targetX, targetY, RGB(R, G, B));
             }
         }
     }
-    
+
     stbi_image_free(img);
+
+    if(clipped) {
+        DEBUG("Warning: image extends beyond display bounds, clipping\n");
+    }
+
     return 0;
 }
