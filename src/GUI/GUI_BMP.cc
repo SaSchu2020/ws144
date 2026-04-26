@@ -23,39 +23,58 @@
 
 UBYTE GUI_ReadBmp(const char *path)
 {
-    FILE *fp;                     //Define a file pointer 
-    BMPFILEHEADER bmpFileHeader;  //Define a bmp file header structure
-    BMPINF bmpInfoHeader;         //Define a bmp bitmap header structure 
+    return GUI_ReadBmp_WithOffset(path, 0, 0);
+}
 
-    // Binary file open
-    if((fp = fopen(path, "rb")) == NULL) { // fp = 0x00426aa0
+UBYTE GUI_ReadBmp_WithOffset(const char *path, UWORD x, UWORD y)
+{
+    FILE *fp;
+    BMPFILEHEADER bmpFileHeader;
+    BMPINF bmpInfoHeader;
+
+    if((fp = fopen(path, "rb")) == NULL) {
         DEBUG("Cann't open the file!\n");
         return 0;
     }
-    
-    // Set the file pointer from the beginning
-    fseek(fp, 0, SEEK_SET); // fp = 0x00426aa0
-    fread(&bmpFileHeader, sizeof(BMPFILEHEADER), 1, fp);//	sizeof(BMPFILEHEADER) must be 14,
-	fread(&bmpInfoHeader, sizeof(BMPINF), 1, fp);
 
-	unsigned long row, col;
+    fseek(fp, 0, SEEK_SET);
+    fread(&bmpFileHeader, sizeof(BMPFILEHEADER), 1, fp);
+    fread(&bmpInfoHeader, sizeof(BMPINF), 1, fp);
+
+    unsigned long row, col;
     short data;
-	RGBQUAD rgb;
-	int len = bmpInfoHeader.bBitCount / 8;    //RGB888,one 3 byte = 1 bitbmp
-    
-	// get bmp data and show
-	fseek(fp, bmpFileHeader.bOffset, SEEK_SET);
+    RGBQUAD rgb;
+    int len = bmpInfoHeader.bBitCount / 8;
+
+    UWORD displayWidth = LCD_WIDTH;
+    UWORD displayHeight = LCD_HEIGHT;
+    UBYTE clipped = 0;
+
+    fseek(fp, bmpFileHeader.bOffset, SEEK_SET);
     for(row = 0; row < bmpInfoHeader.bHeight; row++) {
         for(col = 0; col < bmpInfoHeader.bWidth; col++) {
-			if(fread((char *)&rgb, 1, len, fp) != len){
-				perror("get bmpdata:\r\n");
-				break;
-			}            
+            if(fread((char *)&rgb, 1, len, fp) != len){
+                perror("get bmpdata:\r\n");
+                break;
+            }
+
+            UWORD targetX = x + col;
+            UWORD targetY = y + (bmpInfoHeader.bHeight - row - 1);
+
+            if(targetX >= displayWidth || targetY >= displayHeight) {
+                clipped = 1;
+                continue;
+            }
+
             data = RGB((rgb.rgbRed), (rgb.rgbGreen), (rgb.rgbBlue));
-            // ImageBuff[col + ((bmpInfoHeader.bHeight - row - 1) * bmpInfoHeader.bWidth)] = data;
-            Paint_SetPixel(col, bmpInfoHeader.bHeight - row - 1, data);
+            Paint_SetPixel(targetX, targetY, data);
         }
     }
-	fclose(fp);
+    fclose(fp);
+
+    if(clipped) {
+        DEBUG("Warning: image extends beyond display bounds, clipping\n");
+    }
+
     return 0;
 }
