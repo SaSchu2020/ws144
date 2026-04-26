@@ -22,6 +22,8 @@ Napi::Object Init(Napi::Env env, Napi::Object exports) {
     display.Set(Napi::String::New(env, "writeText"), Napi::Function::New(env, writeText));
     display.Set(Napi::String::New(env, "drawBitmap"), Napi::Function::New(env, drawBitmap));
     display.Set(Napi::String::New(env, "drawPng"), Napi::Function::New(env, drawPng));
+    display.Set(Napi::String::New(env, "drawBitmapAt"), Napi::Function::New(env, drawBitmapAt));
+    display.Set(Napi::String::New(env, "drawPngAt"), Napi::Function::New(env, drawPngAt));
     display.Set(Napi::String::New(env, "setPixel"), Napi::Function::New(env, setPixel));
     display.Set(Napi::String::New(env, "drawImageBuffer"), Napi::Function::New(env, drawImageBuffer));
     display.Set(Napi::String::New(env, "clear"), Napi::Function::New(env, clear));
