@@ -35,7 +35,7 @@ Napi::Boolean drawBitmap(const Napi::CallbackInfo& info) {
     std::string pathStr = info[0].As<Napi::String>().Utf8Value();
     const char* path = pathStr.c_str();
 
-    GUI_ReadBmp(path);
+GUI_ReadBmp_WithOffset(path, 0, 0);
 
     LCD_1in44_Display(displayBuffer);
 
@@ -48,11 +48,43 @@ Napi::Boolean drawPng(const Napi::CallbackInfo& info) {
     std::string pathStr = info[0].As<Napi::String>().Utf8Value();
     const char* path = pathStr.c_str();
 
-    GUI_ReadPng(path);
+    GUI_ReadPng_WithOffset(path, 0, 0);
 
     LCD_1in44_Display(displayBuffer);
 
 	return Napi::Boolean::New(env, true);
+}
+
+Napi::Boolean drawBitmapAt(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+
+    std::string pathStr = info[0].As<Napi::String>().Utf8Value();
+    const char* path = pathStr.c_str();
+
+    UWORD x = (uint32_t)info[1].As<Napi::Number>();
+    UWORD y = (uint32_t)info[2].As<Napi::Number>();
+
+    GUI_ReadBmp_WithOffset(path, x, y);
+
+    LCD_1in44_Display(displayBuffer);
+
+    return Napi::Boolean::New(env, true);
+}
+
+Napi::Boolean drawPngAt(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+
+    std::string pathStr = info[0].As<Napi::String>().Utf8Value();
+    const char* path = pathStr.c_str();
+
+    UWORD x = (uint32_t)info[1].As<Napi::Number>();
+    UWORD y = (uint32_t)info[2].As<Napi::Number>();
+
+    GUI_ReadPng_WithOffset(path, x, y);
+
+    LCD_1in44_Display(displayBuffer);
+
+    return Napi::Boolean::New(env, true);
 }
 
 Napi::Boolean setPixel(const Napi::CallbackInfo& info) {
