@@ -26,6 +26,8 @@ export interface Display {
     y2: number,
     color?: number
   ): boolean;
+  beginDraw(color?: number): boolean;
+  endDraw(): boolean;
 }
 
 export interface Keys {
