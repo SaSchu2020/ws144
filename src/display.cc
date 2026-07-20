@@ -36,7 +36,7 @@ Napi::Boolean writeText(const Napi::CallbackInfo& info) {
 
     Paint_DrawString_EN(x, y, text, &Font12, color, backgroundColor);
 
-    LCD_1in44_Display(displayBuffer);
+    PresentIfLive();
 
 	return Napi::Boolean::New(env, true);
 }
@@ -49,7 +49,7 @@ Napi::Boolean drawBitmap(const Napi::CallbackInfo& info) {
 
 GUI_ReadBmp_WithOffset(path, 0, 0);
 
-    LCD_1in44_Display(displayBuffer);
+    PresentIfLive();
 
 	return Napi::Boolean::New(env, true);
 }
@@ -62,7 +62,7 @@ Napi::Boolean drawPng(const Napi::CallbackInfo& info) {
 
     GUI_ReadPng_WithOffset(path, 0, 0);
 
-    LCD_1in44_Display(displayBuffer);
+    PresentIfLive();
 
 	return Napi::Boolean::New(env, true);
 }
@@ -78,7 +78,7 @@ Napi::Boolean drawBitmapAt(const Napi::CallbackInfo& info) {
 
     GUI_ReadBmp_WithOffset(path, x, y);
 
-    LCD_1in44_Display(displayBuffer);
+    PresentIfLive();
 
     return Napi::Boolean::New(env, true);
 }
@@ -94,7 +94,7 @@ Napi::Boolean drawPngAt(const Napi::CallbackInfo& info) {
 
     GUI_ReadPng_WithOffset(path, x, y);
 
-    LCD_1in44_Display(displayBuffer);
+    PresentIfLive();
 
     return Napi::Boolean::New(env, true);
 }
@@ -109,7 +109,7 @@ Napi::Boolean setPixel(const Napi::CallbackInfo& info) {
 
     Paint_SetPixel(x, y, color);
 
-    LCD_1in44_Display(displayBuffer);
+    PresentIfLive();
 
 	return Napi::Boolean::New(env, true);
 }
@@ -129,7 +129,7 @@ Napi::Boolean drawImageBuffer(const Napi::CallbackInfo& info) {
         }
     }
 
-    LCD_1in44_Display(displayBuffer);
+    PresentIfLive();
 
 	return Napi::Boolean::New(env, true);
 }
@@ -145,7 +145,7 @@ Napi::Boolean clear(const Napi::CallbackInfo& info) {
 
     Paint_Clear(clearColor);
 
-    LCD_1in44_Display(displayBuffer);
+    PresentIfLive();
 
 	return Napi::Boolean::New(env, true);
 }
@@ -198,7 +198,7 @@ Napi::Boolean clearRectangle(const Napi::CallbackInfo& info) {
 
     Paint_ClearWindow(x1, y1, x2 + 1, y2 + 1, color);
 
-    LCD_1in44_Display(displayBuffer);
+    PresentIfLive();
 
     return Napi::Boolean::New(env, true);
 }
