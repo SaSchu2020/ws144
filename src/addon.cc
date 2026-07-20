@@ -28,6 +28,8 @@ Napi::Object Init(Napi::Env env, Napi::Object exports) {
     display.Set(Napi::String::New(env, "drawImageBuffer"), Napi::Function::New(env, drawImageBuffer));
     display.Set(Napi::String::New(env, "clear"), Napi::Function::New(env, clear));
     display.Set(Napi::String::New(env, "clearRectangle"), Napi::Function::New(env, clearRectangle));
+    display.Set(Napi::String::New(env, "beginDraw"), Napi::Function::New(env, beginDraw));
+    display.Set(Napi::String::New(env, "endDraw"), Napi::Function::New(env, endDraw));
 
     keys.Set(Napi::String::New(env, "getState"), Napi::Function::New(env, getState));
 
