@@ -202,3 +202,33 @@ Napi::Boolean clearRectangle(const Napi::CallbackInfo& info) {
 
     return Napi::Boolean::New(env, true);
 }
+
+Napi::Boolean beginDraw(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+
+    UWORD color = 0x0000;
+
+    if (info.Length() > 0) {
+        color = (uint32_t)info[0].As<Napi::Number>() << 8;
+    }
+
+    Paint_Clear(color);
+
+    g_buffering = true;
+
+    return Napi::Boolean::New(env, true);
+}
+
+Napi::Boolean endDraw(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+
+    if (!g_buffering) {
+        return Napi::Boolean::New(env, false);
+    }
+
+    g_buffering = false;
+
+    LCD_1in44_Display(displayBuffer);
+
+    return Napi::Boolean::New(env, true);
+}
