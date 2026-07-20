@@ -91,6 +91,7 @@ async function quit() {
     ]);
 
     testClearRectangle();
+    testDrawingBuffer();
 })();
 
 function testClearRectangle() {
@@ -106,4 +107,34 @@ function testClearRectangle() {
   console.log("clearRectangle(0, 0, 127, 127) [full screen]:", result3);
 
   return result && result2 && result3;
+}
+
+function testDrawingBuffer() {
+  console.log("\n=== Testing drawing buffer (beginDraw/endDraw) ===");
+
+  // endDraw with no active session returns false
+  const orphanEnd = Display.endDraw();
+  console.log("endDraw() with no active session:", orphanEnd, "(expected false)");
+
+  // Normal buffered cycle
+  const begin1 = Display.beginDraw();
+  console.log("beginDraw():", begin1, "(expected true)");
+  Display.drawBitmap("./src/demo.bmp");
+  Display.setPixel(64, 64, 0xff00);
+  Display.writeText("Buffered", 10, 10, 0x0000, 0xffff);
+  const end1 = Display.endDraw();
+  console.log("endDraw():", end1, "(expected true)");
+
+  // Buffered cycle with a fill color, then a double beginDraw (re-prefill)
+  const begin2 = Display.beginDraw(0x2000);
+  console.log("beginDraw(0x2000):", begin2, "(expected true)");
+  const begin3 = Display.beginDraw(0x0010);
+  console.log("beginDraw(0x0010) while buffering:", begin3, "(expected true)");
+  Display.writeText("ReFilled", 10, 30, 0xffff, 0x0000);
+  const end2 = Display.endDraw();
+  console.log("endDraw():", end2, "(expected true)");
+
+  const ok = orphanEnd === false && begin1 && end1 && begin2 && begin3 && end2;
+  console.log("testDrawingBuffer result:", ok);
+  return ok;
 }
