@@ -12,5 +12,7 @@ Napi::Boolean clear(const Napi::CallbackInfo& info);
 Napi::Boolean clearRectangle(const Napi::CallbackInfo& info);
 Napi::Boolean drawBitmapAt(const Napi::CallbackInfo& info);
 Napi::Boolean drawPngAt(const Napi::CallbackInfo& info);
+Napi::Boolean beginDraw(const Napi::CallbackInfo& info);
+Napi::Boolean endDraw(const Napi::CallbackInfo& info);
 
 #endif
