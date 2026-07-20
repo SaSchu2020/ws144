@@ -10,6 +10,18 @@
 
 #include "display.h"
 
+// Deferred-flush state for beginDraw()/endDraw().
+// When buffering is active, drawing operations write to displayBuffer but
+// skip the per-operation hardware flush. endDraw() performs the single flush.
+static bool g_buffering = false;
+
+// Flush the buffer to the physical LCD only when not in a buffered session.
+static void PresentIfLive() {
+    if (!g_buffering) {
+        LCD_1in44_Display(displayBuffer);
+    }
+}
+
 Napi::Boolean writeText(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
 
