@@ -26,7 +26,7 @@ export interface Display {
     y2: number,
     color?: number
   ): boolean;
-  beginDraw(color?: number): boolean;
+  beginDraw(shouldClear?: boolean | number, color?: number): boolean;
   endDraw(): boolean;
 }
 

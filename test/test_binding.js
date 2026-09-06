@@ -134,7 +134,15 @@ function testDrawingBuffer() {
   const end2 = Display.endDraw();
   console.log("endDraw():", end2, "(expected true)");
 
-  const ok = orphanEnd === false && begin1 && end1 && begin2 && begin3 && end2;
+  // Buffered cycle skipping full clear, using clearRectangle for partial clear
+  const begin4 = Display.beginDraw(false);
+  console.log("beginDraw(false):", begin4, "(expected true)");
+  Display.clearRectangle(20, 20, 60, 60, 0x07E0);
+  Display.writeText("Partial", 30, 70, 0x0000, 0xffff);
+  const end3 = Display.endDraw();
+  console.log("endDraw() after partial clear:", end3, "(expected true)");
+
+  const ok = orphanEnd === false && begin1 && end1 && begin2 && begin3 && end2 && begin4 && end3;
   console.log("testDrawingBuffer result:", ok);
   return ok;
 }

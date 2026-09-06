@@ -207,12 +207,22 @@ Napi::Boolean beginDraw(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
 
     UWORD color = 0x0000;
+    bool shouldClear = true;
 
     if (info.Length() > 0) {
-        color = (uint32_t)info[0].As<Napi::Number>() << 8;
+        if (info[0].IsBoolean()) {
+            shouldClear = info[0].As<Napi::Boolean>();
+            if (info.Length() > 1) {
+                color = (uint32_t)info[1].As<Napi::Number>() << 8;
+            }
+        } else {
+            color = (uint32_t)info[0].As<Napi::Number>() << 8;
+        }
     }
 
-    Paint_Clear(color);
+    if (shouldClear) {
+        Paint_Clear(color);
+    }
 
     g_buffering = true;
 
