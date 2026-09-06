@@ -5,5 +5,6 @@
 #include "GUI_Paint.h"
 
 UBYTE GUI_ReadPng(const char *path);
+UBYTE GUI_ReadPng_WithOffset(const char *path, UWORD x, UWORD y);
 
 #endif

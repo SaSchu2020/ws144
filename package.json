@@ -1,16 +1,21 @@
 {
   "name": "@saschu2020/ws144",
-  "repository": "https://github.com/SaSchu2020/ws144",
-  "version": "1.0.7",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SaSchu2020/ws144.git"
+  },
+  "version": "1.0.8-beta.2",
   "description": "A sample native node addon to control a Waveshare 1.44\" display hat from nodejs on a raspberry pi",
   "main": "binding.js",
+  "types": "binding.d.ts",
   "files": [
     "./src",
     "./lgpio/*.c",
     "./lgpio/*.h",
     "./binding.gyp",
     "./prebuilds",
-    "./binding.js"
+    "./binding.js",
+    "./binding.d.ts"
   ],
   "scripts": {
     "install": "node-gyp-build || exit 0",

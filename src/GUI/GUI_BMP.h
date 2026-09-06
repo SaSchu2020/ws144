@@ -11,8 +11,8 @@
 * | Info        :   Basic version
 *
 ******************************************************************************/
-#ifndef __GUI_BMP_H
-#define __GUI_BMP_H
+#ifndef GUI_BMP_H
+#define GUI_BMP_H
 
 #include <stdio.h>
 #include <fcntl.h>
@@ -59,4 +59,5 @@ typedef struct RGB_QUAD {
 /**************************************** end ***********************************************/
 
 UBYTE GUI_ReadBmp(const char *path);
+UBYTE GUI_ReadBmp_WithOffset(const char *path, UWORD x, UWORD y);
 #endif
